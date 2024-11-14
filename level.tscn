@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfw0r2d4vyo0d"]
+
+[ext_resource type="Script" path="res://level_manager.gd" id="1_f55rs"]
+[ext_resource type="PackedScene" uid="uid://dhgxpsd6gokho" path="res://player.tscn" id="1_rhkdg"]
+[ext_resource type="PackedScene" uid="uid://50ps76xxf4sf" path="res://platform.tscn" id="2_nb8qt"]
+
+[sub_resource type="Curve2D" id="Curve2D_iw6rb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 720, 0)
+}
+point_count = 2
+
+[node name="Level" type="Node2D"]
+position = Vector2(-1, 0)
+script = ExtResource("1_f55rs")
+platform_scene = ExtResource("2_nb8qt")
+
+[node name="Player" parent="." instance=ExtResource("1_rhkdg")]
+position = Vector2(391, 1147)
+
+[node name="TopSpawner" type="Path2D" parent="."]
+curve = SubResource("Curve2D_iw6rb")
+
+[node name="platformSpawn" type="PathFollow2D" parent="TopSpawner"]
