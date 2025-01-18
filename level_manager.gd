@@ -50,7 +50,13 @@ func _process(delta):
 
 	if($Player.position.y < screenHeight - screenHeight / 4):
 		# print("Player reached 1/4 of the screen!")
+		var deadzone : float = screenHeight - screenHeight / 4
+		var speedmod : float = deadzone / $Player.position.y
+		#print("%f = %f / %f " %[speedmod, deadzone, $Player.position.y])
 		for x in platform_storage:
-			x.position.y += platformSpeed * delta
+			#x.position.y += delta * speedmod	
+			x.position.y += platformSpeed * delta * speedmod
 			# print(x.name, " is going down: ", x.position)
+			
+		#$Player.position.y -= delta * speedmod
 		
