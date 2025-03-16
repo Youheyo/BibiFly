@@ -12,6 +12,7 @@ func _ready():
 	velocity.y = JUMP_VELOCITY * 1.5
 
 func _physics_process(delta):
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -39,3 +40,8 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_tree_exiting():
+	print("PLAYER DIED!!!")
+	pass # Replace with function body.

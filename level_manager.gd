@@ -4,9 +4,10 @@ extends Node
 # * Platform related 
 @export_group("Platform properties")
 @export var platform_scene: PackedScene
-var platform_storage = []
-@export var platformSpeed = 1000
+var last_platform: Object
 
+signal lower_platform
+@export var platformSpeed = 1000
 
 # * MaxMin distance a platform can spawn
 @export_group("Spawn Distance Properties")
@@ -23,40 +24,43 @@ var screenHeight = RenderingServer.get_rendering_device().screen_get_height()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
-	print("Screen Height: ", screenHeight, " | 1/3 = ", screenHeight / 3)
-
-	var platform = platform_scene.instantiate()
-	var platformSpawn = $TopSpawner/platformSpawn
-	platformSpawn.progress_ratio = randf()
-	# print(platform.name, "instantiated at ", platform.position)
-	platform.position = platformSpawn.position
-	platform_storage.append(platform)
-	add_child(platform)
-
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 
-	if(platform_storage.back().position.y > randf_range(min_distance_y, max_distance_y)):
+	if(is_instance_valid(last_platform)):
+		if(last_platform.position.y > randf_range(min_distance_y, max_distance_y)):
+			var platform = platform_scene.instantiate()
+			var platformSpawn = $TopSpawner/platformSpawn
+			platformSpawn.progress_ratio = randf()
+			# print(platform.name, "instantiated at ", platform.position)
+			platform.position = platformSpawn.position
+			last_platform = platform
+			connect("lower_platform", platform.on_lower_platform)
+			add_child(platform)
+	else:
 		var platform = platform_scene.instantiate()
 		var platformSpawn = $TopSpawner/platformSpawn
 		platformSpawn.progress_ratio = randf()
 		# print(platform.name, "instantiated at ", platform.position)
 		platform.position = platformSpawn.position
-		platform_storage.append(platform)
+		last_platform = platform
+		connect("lower_platform", platform.on_lower_platform)
 		add_child(platform)
 
-	if($Player.position.y < screenHeight - screenHeight / 4):
-		# print("Player reached 1/4 of the screen!")
-		var deadzone : float = screenHeight - screenHeight / 4
-		var speedmod : float = deadzone / $Player.position.y
-		#print("%f = %f / %f " %[speedmod, deadzone, $Player.position.y])
-		for x in platform_storage:
-			#x.position.y += delta * speedmod	
-			x.position.y += platformSpeed * delta * speedmod
-			# print(x.name, " is going down: ", x.position)
+	var speedmod: float = 1
+
+	if($Player): # * Check if player exists
+
+		if($Player.velocity.y < 0):
 			
-		#$Player.position.y -= delta * speedmod
-		
+			emit_signal("lower_platform", delta * $Player.velocity.y)
+
+
+		if($Player.position.y > screenHeight * 1.5):
+			print("Player died")
+			# $Player.queue_free()
+
+	
