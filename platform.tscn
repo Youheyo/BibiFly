@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://50ps76xxf4sf"]
 
-[ext_resource type="Script" uid="uid://cid0mtewidvb3" path="res://platform.gd" id="1_3xt1s"]
-[ext_resource type="Texture2D" uid="uid://bycibyu1l3roi" path="res://clouds.png" id="2_s8bxr"]
+[ext_resource type="Script" uid="uid://cid0mtewidvb3" path="res://Scripts/platform.gd" id="1_3xt1s"]
+[ext_resource type="Texture2D" uid="uid://bycibyu1l3roi" path="res://Sprites/clouds.png" id="2_s8bxr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0l2ix"]
 size = Vector2(135, 4)
