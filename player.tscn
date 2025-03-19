@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dhgxpsd6gokho"]
 
 [ext_resource type="Script" uid="uid://br8xqfqqngdp6" path="res://player.gd" id="1_orri2"]
-[ext_resource type="Texture2D" uid="uid://dxbte7aiv0i78" path="res://bibi.png" id="2_3723x"]
+[ext_resource type="Texture2D" uid="uid://dof4nhqcrdqkg" path="res://bibi.png" id="2_3723x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yeooy"]
 size = Vector2(535, 435)

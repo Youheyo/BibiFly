@@ -3,9 +3,7 @@ extends CharacterBody2D
 
 @export var SPEED = 300.0
 @export var JUMP_VELOCITY = -800.0
-var gameStart = false
 
-signal falling
 var isFalling = false
 
 func _ready():
