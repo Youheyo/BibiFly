@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://du1eej4u26l7o"]
 
 [ext_resource type="Script" uid="uid://bpm3q06hgfn2l" path="res://Scripts/level_manager.gd" id="1_f55rs"]
-[ext_resource type="PackedScene" path="res://player.tscn" id="1_rhkdg"]
+[ext_resource type="PackedScene" uid="uid://dhgxpsd6gokho" path="res://player.tscn" id="1_rhkdg"]
 [ext_resource type="PackedScene" uid="uid://50ps76xxf4sf" path="res://platform.tscn" id="2_nb8qt"]
 [ext_resource type="Texture2D" uid="uid://cvl6hhuq3sugh" path="res://Sprites/sky.png" id="4_0b4ue"]
 
@@ -28,10 +28,43 @@ curve = SubResource("Curve2D_iw6rb")
 
 [node name="platformSpawn" type="PathFollow2D" parent="TopSpawner"]
 
+[node name="PlatformContainer" type="Node2D" parent="TopSpawner"]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.762404, 0.762404, 0.762404, 1)
 z_index = -1
 position = Vector2(392, 384)
 texture = ExtResource("4_0b4ue")
 
+[node name="GameUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="score" type="Label" parent="GameUI"]
+layout_mode = 0
+offset_left = -2.0
+offset_right = 38.0
+offset_bottom = 23.0
+text = "9999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartButton" type="Button" parent="StartScreen"]
+layout_mode = 0
+offset_left = 311.0
+offset_top = 836.0
+offset_right = 425.0
+offset_bottom = 915.0
+text = "START"
+
 [connection signal="tree_exiting" from="Player" to="Player" method="_on_tree_exiting"]
+[connection signal="pressed" from="StartScreen/StartButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="StartScreen/StartButton" to="Player" method="_on_button_pressed"]

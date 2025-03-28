@@ -4,12 +4,20 @@ extends CharacterBody2D
 @export var SPEED = 300.0
 @export var JUMP_VELOCITY = -800.0
 
-var isFalling = false
+
+var GameStart = false
+
+var InitialPos: Vector2
+
 
 func _ready():
-	velocity.y = JUMP_VELOCITY * 1.5
+	GameStart = false
+	InitialPos = position
+	pass
 
 func _physics_process(delta):
+
+	if(!GameStart): return
 
 	# Add the gravity.
 	if not is_on_floor():
@@ -18,11 +26,6 @@ func _physics_process(delta):
 	# Handle jump.
 	if is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
-	if(velocity.y > 0):
-		isFalling = true
-	else:
-		isFalling = false
 
 	# ? Debug Outputs
 	# print("Falling? ", isFalling)
@@ -42,4 +45,11 @@ func _physics_process(delta):
 
 func _on_tree_exiting():
 	print("PLAYER DIED!!!")
+	pass # Replace with function body.
+
+
+func _on_button_pressed():
+	position = InitialPos
+	GameStart = true
+	velocity.y = JUMP_VELOCITY * 1.5
 	pass # Replace with function body.

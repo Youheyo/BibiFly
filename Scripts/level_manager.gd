@@ -22,13 +22,14 @@ signal lower_platform
 @export var clamp_player_y_pos: bool = true
 var screenHeight = RenderingServer.get_rendering_device().screen_get_height()
 
-
 var PlayerAlive: bool
 var GameStart: bool
+var score: float
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	PlayerAlive = true
+	set_score(0)
 	pass
 
 
@@ -45,26 +46,14 @@ func _process(delta):
 			var platformSpawn = $TopSpawner/platformSpawn
 			platformSpawn.progress_ratio = randf()
 			platform.position = platformSpawn.position
-			
+
 			last_platform = platform
 
 			# * Connect signal to instantiated child
 			connect("lower_platform", platform.on_lower_platform)
 
 			# * Add child to game node
-			add_child(platform)
-	else:
-		
-		# * Spawn Initial platform
-		# * Same code as above
-		var platform = platform_scene.instantiate()
-		var platformSpawn = $TopSpawner/platformSpawn
-		platformSpawn.progress_ratio = randf()
-		# print(platform.name, "instantiated at ", platform.position)
-		platform.position = platformSpawn.position
-		last_platform = platform
-		connect("lower_platform", platform.on_lower_platform)
-		add_child(platform)
+			$TopSpawner/PlatformContainer.add_child(platform)
 
 	if $Player.is_inside_tree() : # * Check if player exists
 
@@ -87,12 +76,51 @@ func _process(delta):
 			if(GameStart && $Player.velocity.y < 0 && $Player.position.y <= screenHeight / 2):
 				var speed = delta * $Player.velocity.y
 				lower_platform.emit(speed)
+				add_score(speed)
 
 		# print("Player Position ", $Player.position.y , " ", screenHeight - bottomOffset)
 
 		if($Player.position.y > screenHeight * 1.5 && PlayerAlive):
 			print("Player died")
 			PlayerAlive = false
+			GameStart = false
+			$Player.GameStart = PlayerAlive
+			$StartScreen/StartButton.visible = true
+
 			# $Player.queue_free()
 
+func set_score(value: float):
+	score = abs(value)
+	$GameUI/score.text = "%.2fm" % score
+
+func add_score(value: float):
+	score += abs(value)
+	$GameUI/score.text = "%.2fm" % score
 	
+
+
+func _on_button_pressed():
+
+	despawnPlatforms()
+
+	# * Spawn Initial platform
+	var platform = platform_scene.instantiate()
+	var platformSpawn = $TopSpawner/platformSpawn
+	platformSpawn.progress_ratio = randf()
+	# print(platform.name, "instantiated at ", platform.position)
+	platform.position = platformSpawn.position
+	last_platform = platform
+	connect("lower_platform", platform.on_lower_platform)
+
+	$TopSpawner/PlatformContainer.add_child(platform)
+
+	$StartScreen/StartButton.visible = false
+
+	set_score(0)
+	PlayerAlive = true
+	pass # Replace with function body.
+
+func despawnPlatforms():
+	for child in $TopSpawner/PlatformContainer.get_children():
+		child.queue_free()
+	pass
