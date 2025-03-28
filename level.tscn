@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfw0r2d4vyo0d"]
+[gd_scene load_steps=6 format=3 uid="uid://du1eej4u26l7o"]
 
 [ext_resource type="Script" uid="uid://bpm3q06hgfn2l" path="res://Scripts/level_manager.gd" id="1_f55rs"]
-[ext_resource type="PackedScene" uid="uid://dhgxpsd6gokho" path="res://player.tscn" id="1_rhkdg"]
+[ext_resource type="PackedScene" path="res://player.tscn" id="1_rhkdg"]
 [ext_resource type="PackedScene" uid="uid://50ps76xxf4sf" path="res://platform.tscn" id="2_nb8qt"]
 [ext_resource type="Texture2D" uid="uid://cvl6hhuq3sugh" path="res://Sprites/sky.png" id="4_0b4ue"]
 

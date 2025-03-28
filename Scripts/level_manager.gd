@@ -70,21 +70,21 @@ func _process(delta):
 
 		# * Ensure platforms are reachable by player
 		if(!GameStart):
-			lower_platform.emit(-(delta * 3000))
+			lower_platform.emit((delta * $Player.velocity.y))
 
 		if($Player.position.y < screenHeight - bottomOffset):
 
-			if(!GameStart):
-				GameStart = true
-				print("Game Start!")
-
 			# * Clamp Player Y Position to half the screen size
 			if(clamp_player_y_pos && $Player.position.y <= screenHeight / 2 ):
+				GameStart = true
 				$Player.position.y = screenHeight / 2
 
 
 			# * Platforms move whenever player rises
-			if($Player.velocity.y < 0):
+			# if($Player.velocity.y < 0):
+
+			# * Platforms move when player is rising AND at least half of screen height
+			if(GameStart && $Player.velocity.y < 0 && $Player.position.y <= screenHeight / 2):
 				var speed = delta * $Player.velocity.y
 				lower_platform.emit(speed)
 
