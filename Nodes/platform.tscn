@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://50ps76xxf4sf"]
+
+[ext_resource type="Script" uid="uid://cid0mtewidvb3" path="res://Scripts/platform.gd" id="1_3xt1s"]
+[ext_resource type="Texture2D" uid="uid://bycibyu1l3roi" path="res://Sprites/clouds.png" id="2_s8bxr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0l2ix"]
+size = Vector2(135, 4)
+
+[node name="Platform" type="Node2D"]
+script = ExtResource("1_3xt1s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("2_s8bxr")
+region_enabled = true
+region_rect = Rect2(2113, 221, 1946, 799)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1.5, 0)
+shape = SubResource("RectangleShape2D_0l2ix")
+one_way_collision = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
