@@ -14,9 +14,15 @@ point_count = 2
 [node name="Level" type="Node2D"]
 script = ExtResource("1_f55rs")
 platform_scene = ExtResource("2_nb8qt")
-min_distance_x = 150
-min_distance_y = 155
+max_distance_x = 200.0
+min_distance_x = 100.0
 bottomOffset = 100
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.762404, 0.762404, 0.762404, 1)
+z_index = -1
+position = Vector2(392, 384)
+texture = ExtResource("4_0b4ue")
 
 [node name="Player" parent="." instance=ExtResource("1_rhkdg")]
 z_index = 10
@@ -29,12 +35,6 @@ curve = SubResource("Curve2D_iw6rb")
 [node name="platformSpawn" type="PathFollow2D" parent="TopSpawner"]
 
 [node name="PlatformContainer" type="Node2D" parent="TopSpawner"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.762404, 0.762404, 0.762404, 1)
-z_index = -1
-position = Vector2(392, 384)
-texture = ExtResource("4_0b4ue")
 
 [node name="GameUI" type="Control" parent="."]
 layout_mode = 3

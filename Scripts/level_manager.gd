@@ -7,15 +7,16 @@ extends Node
 var last_platform: Object
 
 signal lower_platform
-@export var platformSpeed = 1000
+@export var platformSpeed: float = 1000
 
 # * MaxMin distance a platform can spawn
 @export_group("Spawn Distance Properties")
-@export var max_distance_x = 300
-@export var min_distance_x = 50
+@export var max_distance_x: float = 300
+@export var min_distance_x: float = 50
 
-@export var max_distance_y = 100
-@export var min_distance_y = 50
+
+@export var max_distance_y: float = 1000
+@export var min_distance_y: float = 50
 
 @export var bottomOffset = 10
 
@@ -25,6 +26,10 @@ var screenHeight = RenderingServer.get_rendering_device().screen_get_height()
 var PlayerAlive: bool
 var GameStart: bool
 var score: float
+
+var dist_y_modifier: float = 0
+var difficulty_level: float = 0
+var difficulty_tracker: float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,12 +44,17 @@ func _process(delta):
 	if(is_instance_valid(last_platform)):
 
 		# * Check distance from last platform
-		if(last_platform.position.y > randf_range(min_distance_y, max_distance_y)):
+		# * Randomly creates y values from a range of min to max
+		# * When random value is valid, spawns a platform
+		if(last_platform.position.y > randf_range(clamp(min_distance_y + dist_y_modifier, min_distance_y, max_distance_y), max_distance_y)):
 
 			# * Instatiate and set random location
 			var platform = platform_scene.instantiate()
 			var platformSpawn = $TopSpawner/platformSpawn
 			platformSpawn.progress_ratio = randf()
+
+			# Todo Clamp X distance spawning to min max distance
+
 			platform.position = platformSpawn.position
 
 			last_platform = platform
@@ -89,12 +99,22 @@ func _process(delta):
 
 			# $Player.queue_free()
 
+		if(difficulty_tracker > 1000 && difficulty_level < 5):
+			difficulty_tracker = 0
+			difficulty_level += 1
+			dist_y_modifier = 50 * difficulty_level
+
+
 func set_score(value: float):
 	score = abs(value)
+
+	if(score != 0):
+		difficulty_level = floorf(score / 1000)
 	$GameUI/score.text = "%.2fm" % score
 
 func add_score(value: float):
 	score += abs(value)
+	difficulty_tracker += abs(value)
 	$GameUI/score.text = "%.2fm" % score
 	
 
@@ -115,6 +135,8 @@ func _on_button_pressed():
 	$TopSpawner/PlatformContainer.add_child(platform)
 
 	$StartScreen/StartButton.visible = false
+
+	dist_y_modifier = 0
 
 	set_score(0)
 	PlayerAlive = true
